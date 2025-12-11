@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Notebook Demo – Biology Page</title>
+  <title>Cell Division</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -16,48 +16,83 @@
       background: #f5f5f5;
     }
     .card {
-      background: white;
+      background: #ffffff;
       padding: 24px 28px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      text-align: center;
-      max-width: 360px;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+      max-width: 420px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: left;
     }
     h1 {
       font-size: 1.4rem;
-      margin-bottom: 8px;
+      margin: 0 0 6px;
     }
     p {
-      margin-top: 0;
-      margin-bottom: 18px;
+      margin: 0 0 16px;
       color: #555;
+      font-size: 0.95rem;
     }
-    a.button {
-      display: inline-block;
-      padding: 10px 18px;
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    a.resource-btn {
+      display: block;
+      padding: 10px 14px;
       border-radius: 999px;
       text-decoration: none;
       font-weight: 600;
-      border: none;
-      background: #2563eb;
-      color: white;
+      font-size: 0.95rem;
+      border: 1px solid #e0e0e0;
+      background: #ffffff;
+      color: #1f2937;
+    }
+    a.resource-btn span {
+      display: block;
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+    a.resource-btn:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     small {
       display: block;
-      margin-top: 16px;
-      color: #888;
+      margin-top: 18px;
+      color: #9ca3af;
       font-size: 0.75rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>Biology – Linked Page</h1>
-    <p>This notebook page is linked to your Biology resources.</p>
-    <a class="button" href="https://drive.google.com/file/d/1Az23NIsJjIJyjiuFKoJrhzN7O1j1SOuv/view" target="_blank">
-      Open Biology Folder
-    </a>
-    <small>Demo of the SyncPad / PageLink notebook system.</small>
+    <h1>Biology – Cell Division</h1>
+    <p>This notebook page is linked to all the resources for this lesson.</p>
+
+    <div class="btn-group">
+      <a class="resource-btn" href="https://drive.google.com/file/d/1USCqK2kyDttrAjt_oSyt-WQbr1VHlFjn/view" target="_blank">
+        Lesson Slides
+        <span>Google Slides for The Lesson.</span>
+      </a>
+
+      <a class="resource-btn" href="https://www.youtube.com/watch?v=QVCjdNxJreE" target="_blank">
+        Explainer Video
+        <span>Video for Cell Divison.</span>
+      </a>
+
+      <a class="resource-btn" href="https://drive.google.com/file/d/1Qj4rxRazsvzEeI4NiJPNcD7amouJSb1G/view" target="_blank">
+        Worksheet / Homework
+        <span>Homework Questions.</span>
+      </a>
+
+    </div>
+
+    <small>Demo page for the SyncPad / Page-Link notebook system.</small>
   </div>
 </body>
 </html>
