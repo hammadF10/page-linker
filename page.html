@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notebook Page Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f5f5f5;
+    }
+    .card {
+      background: #ffffff;
+      padding: 24px 28px;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+      max-width: 420px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 0 6px;
+    }
+    p {
+      margin: 0 0 16px;
+      color: #555;
+      font-size: 0.95rem;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    a.resource-btn {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1px solid #e0e0e0;
+      background: #ffffff;
+      color: #1f2937;
+    }
+    a.resource-btn span {
+      display: block;
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+    a.resource-btn:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .tag-id {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-align: right;
+    }
+    .empty {
+      color: #9ca3af;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 id="page-title">Loading…</h1>
+    <p id="page-desc"></p>
+
+    <div class="btn-group" id="links"></div>
+
+    <div class="tag-id" id="tag-id"></div>
+  </div>
+
+  <script>
+    // 1) Grab ?id=BIO1 from the URL
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    const pageId = getParam("id");
+
+    // 2) Our "database" of pages for the demo
+    const PAGES = {
+      "BIO1": {
+        title: "Biology – Cell Division",
+        description: "Resources linked to this notebook page.",
+        links: [
+          {
+            label: "Lesson Slides",
+            sub: "Google Slides for The Lesson.",
+            url: "https://drive.google.com/file/d/1USCqK2kyDttrAjt_oSyt-WQbr1VHlFjn/view"
+          },
+          {
+            label: "Explainer Video",
+            sub: "YouTube recap of mitosis & meiosis.",
+            url: "https://www.youtube.com/watch?v=QVCjdNxJreE"
+          },
+          {
+            label: "Worksheet / Homework",
+            sub: "Practice questions for this topic.",
+            url: "https://drive.google.com/file/d/1Qj4rxRazsvzEeI4NiJPNcD7amouJSb1G/view"
+          }
+        ]
+      },
+      "MATH1": {
+        title: "Math – Cosine Law",
+        description: "All the materials for this Lesson",
+        links: [
+          {
+            label: "Lesson Slides",
+            sub: "PowerPoint of Cosine Law.",
+            url: "https://drive.google.com/file/d/1j8BgyPrHLJZul9c27knG4cpdEIy1WSZi/view"
+          },
+          {
+            label: "Homework Questions for Cosine Law",
+            sub: "Textbook",
+            url: "https://drive.google.com/file/u/0/d/1mvb4TK_2E5EB0dIFAU4vXttDCRvbx5HB/view?usp=classroom_web"
+          }
+        ]
+      },
+      "CHEM1": {
+        title: "Chemistry – Stoichiometry",
+        description: "PowerPoint for Stoichimetry Lesson",
+        links: [
+          {
+            label: "Lesson Slides",
+            sub: "Key formulas and examples.",
+            url: "https://drive.google.com/file/d/1l04KFMQgykdQTGUtld5P-kx8nHxccRVg/view"
+          }
+        ]
+      }
+    };
+
+    const data = PAGES[pageId];
+
+    const titleEl = document.getElementById("page-title");
+    const descEl = document.getElementById("page-desc");
+    const linksEl = document.getElementById("links");
+    const tagIdEl = document.getElementById("tag-id");
+
+    if (!data) {
+      titleEl.textContent = "Page not set up yet";
+      descEl.innerHTML = "Ask your teacher to connect resources to this notebook page.";
+      linksEl.innerHTML = "<p class='empty'>No links available.</p>";
+      tagIdEl.textContent = "Tag ID: " + (pageId || "unknown");
+    } else {
+      titleEl.textContent = data.title;
+      descEl.textContent = data.description;
+      data.links.forEach(link => {
+        const a = document.createElement("a");
+        a.className = "resource-btn";
+        a.href = link.url;
+        a.target = "_blank";
+        a.innerHTML = `${link.label}<span>${link.sub}</span>`;
+        linksEl.appendChild(a);
+      });
+      tagIdEl.textContent = "Tag ID: " + pageId;
+    }
+  </script>
+</body>
+</html>
