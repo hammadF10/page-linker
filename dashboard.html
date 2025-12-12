@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SyncPad Teacher Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f3f4f6;
+      color: #111827;
+    }
+    header {
+      background: #111827;
+      color: white;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    header span {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    main {
+      max-width: 1100px;
+      margin: 18px auto 32px;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 18px;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px 20px 20px;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.09);
+    }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #4b5563;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input[type="text"], input[type="url"], textarea, select {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      padding: 7px 9px;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      outline: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.2);
+    }
+    textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .btn-primary, .btn-secondary, .btn-small {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .btn-secondary:hover { background: #d1d5db; }
+    .btn-small {
+      background: transparent;
+      border: 1px solid #e5e7eb;
+      color: #4b5563;
+      padding: 4px 10px;
+    }
+    .btn-small:hover {
+      background: #f3f4f6;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .status {
+      font-size: 0.75rem;
+      color: #16a34a;
+    }
+    .list {
+      margin-top: 10px;
+      max-height: 200px;
+      overflow: auto;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 8px;
+    }
+    .list-item {
+      padding: 6px 0;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .list-item span.key {
+      font-weight: 600;
+      color: #111827;
+    }
+    .list-item span.meta {
+      color: #6b7280;
+    }
+
+    /* Student preview card */
+    .preview-title {
+      font-size: 1.1rem;
+      margin: 0 0 4px;
+    }
+    .preview-desc {
+      margin: 0 0 14px;
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+    .preview-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .preview-btn {
+      display: block;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 9px 13px;
+      border: 1px solid #e5e7eb;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #111827;
+    }
+    .preview-btn span {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: #6b7280;
+    }
+    .preview-footer {
+      margin-top: 16px;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      text-align: right;
+    }
+    pre {
+      background: #111827;
+      color: #e5e7eb;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>SyncPad Teacher Dashboard</h1>
+      <span>Link notebook pages to digital resources</span>
+    </div>
+    <div style="font-size:0.8rem; opacity:0.8;">
+      Demo account · Class: <strong>10 Science</strong>
+    </div>
+  </header>
+
+  <main>
+    <!-- LEFT: Editor -->
+    <section class="card">
+      <h2>Page setup</h2>
+      <p style="font-size:0.8rem; margin:0 0 12px; color:#6b7280;">
+        Choose a page ID, then add the title and links students should see when they tap that notebook page.
+      </p>
+
+      <div class="row">
+        <div>
+          <label for="pageId">Page ID (printed in notebook)</label>
+          <input id="pageId" type="text" placeholder="e.g. BIO1, MATH1">
+        </div>
+        <div>
+          <label for="pageTitle">Page title</label>
+          <input id="pageTitle" type="text" placeholder="e.g. Biology – Cell Division">
+        </div>
+      </div>
+
+      <label for="pageDesc">Short description</label>
+      <textarea id="pageDesc" placeholder="Resources students will see for this page."></textarea>
+
+      <div class="row">
+        <div>
+          <label for="link1Label">Link 1 label</label>
+          <input id="link1Label" type="text" placeholder="Lesson Slides">
+        </div>
+        <div>
+          <label for="link1Url">Link 1 URL</label>
+          <input id="link1Url" type="url" placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="link2Label">Link 2 label</label>
+          <input id="link2Label" type="text" placeholder="Explainer Video">
+        </div>
+        <div>
+          <label for="link2Url">Link 2 URL</label>
+          <input id="link2Url" type="url" placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="link3Label">Link 3 label</label>
+          <input id="link3Label" type="text" placeholder="Worksheet / Homework">
+        </div>
+        <div>
+          <label for="link3Url">Link 3 URL</label>
+          <input id="link3Url" type="url" placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="link4Label">Link 4 label</label>
+          <input id="link4Label" type="text" placeholder="Answer Key / Notes">
+        </div>
+        <div>
+          <label for="link4Url">Link 4 URL</label>
+          <input id="link4Url" type="url" placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" id="saveBtn">Save page</button>
+        <button class="btn-secondary" id="clearBtn">Clear form</button>
+        <span class="status" id="statusMsg"></span>
+      </div>
+
+      <div class="list" id="pageList"></div>
+
+      <div style="margin-top:10px;">
+        <button class="btn-small" id="copyJsonBtn">Copy config JSON</button>
+        <span style="font-size:0.72rem; color:#6b7280;">
+          (For production, this would sync to our cloud database.)
+        </span>
+      </div>
+      <pre id="jsonOutput" style="margin-top:8px; display:none;"></pre>
+    </section>
+
+    <!-- RIGHT: Student preview -->
+    <section class="card">
+      <h2>Student preview</h2>
+      <p style="font-size:0.8rem; margin:0 0 10px; color:#6b7280;">
+        This is what a student sees when they tap that notebook page with their phone.
+      </p>
+      <div id="preview">
+        <p style="font-size:0.85rem; color:#9ca3af; margin:0;">
+          Select or save a page on the left to preview it here.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "syncpad_pages_v1";
+
+    function loadPages() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function savePages(pages) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(pages));
+    }
+
+    let pages = loadPages();
+
+    const pageIdInput = document.getElementById("pageId");
+    const pageTitleInput = document.getElementById("pageTitle");
+    const pageDescInput = document.getElementById("pageDesc");
+    const linkInputs = [
+      { label: document.getElementById("link1Label"), url: document.getElementById("link1Url") },
+      { label: document.getElementById("link2Label"), url: document.getElementById("link2Url") },
+      { label: document.getElementById("link3Label"), url: document.getElementById("link3Url") },
+      { label: document.getElementById("link4Label"), url: document.getElementById("link4Url") },
+    ];
+    const statusMsg = document.getElementById("statusMsg");
+    const pageList = document.getElementById("pageList");
+    const preview = document.getElementById("preview");
+    const jsonOutput = document.getElementById("jsonOutput");
+
+    function renderList() {
+      const ids = Object.keys(pages).sort();
+      if (!ids.length) {
+        pageList.innerHTML = "<p style='font-size:0.8rem; color:#9ca3af; margin:4px 0;'>No pages set up yet.</p>";
+        return;
+      }
+      pageList.innerHTML = "";
+      ids.forEach(id => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        item.innerHTML = `
+          <span class="key">${id}</span>
+          <span class="meta">${pages[id].title || "Untitled page"}</span>
+        `;
+        item.addEventListener("click", () => loadForm(id));
+        pageList.appendChild(item);
+      });
+    }
+
+    function renderPreview(id) {
+      const data = pages[id];
+      if (!data) {
+        preview.innerHTML = "<p style='font-size:0.85rem; color:#9ca3af;'>Page not found.</p>";
+        return;
+      }
+      const linksHtml = (data.links || [])
+        .filter(l => l.label && l.url)
+        .map(l => `
+          <a class="preview-btn" href="${l.url}" target="_blank">
+            ${l.label}
+            ${l.sub ? `<span>${l.sub}</span>` : ""}
+          </a>
+        `).join("");
+
+      preview.innerHTML = `
+        <div>
+          <div class="preview-title">${data.title || "Untitled page"}</div>
+          <p class="preview-desc">${data.description || ""}</p>
+          <div class="preview-buttons">
+            ${linksHtml || "<p style='font-size:0.8rem; color:#9ca3af;'>No links added yet.</p>"}
+          </div>
+          <div class="preview-footer">Tag ID: ${id}</div>
+        </div>
+      `;
+    }
+
+    function clearForm() {
+      pageIdInput.value = "";
+      pageTitleInput.value = "";
+      pageDescInput.value = "";
+      linkInputs.forEach(li => {
+        li.label.value = "";
+        li.url.value = "";
+      });
+      statusMsg.textContent = "";
+    }
+
+    function loadForm(id) {
+      const data = pages[id];
+      if (!data) return;
+      pageIdInput.value = id;
+      pageTitleInput.value = data.title || "";
+      pageDescInput.value = data.description || "";
+      linkInputs.forEach((li, index) => {
+        const link = (data.links || [])[index] || {};
+        li.label.value = link.label || "";
+        li.url.value = link.url || "";
+      });
+      renderPreview(id);
+      statusMsg.textContent = `Loaded page ${id}`;
+    }
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      const id = pageIdInput.value.trim();
+      if (!id) {
+        statusMsg.textContent = "Page ID is required.";
+        statusMsg.style.color = "#dc2626";
+        return;
+      }
+      const entry = {
+        title: pageTitleInput.value.trim(),
+        description: pageDescInput.value.trim(),
+        links: linkInputs
+          .map(li => ({
+            label: li.label.value.trim(),
+            url: li.url.value.trim(),
+            sub: ""   // could add descriptions later
+          }))
+          .filter(l => l.label && l.url)
+      };
+      pages[id] = entry;
+      savePages(pages);
+      renderList();
+      renderPreview(id);
+      statusMsg.textContent = `Saved page ${id}`;
+      statusMsg.style.color = "#16a34a";
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      clearForm();
+    });
+
+    document.getElementById("copyJsonBtn").addEventListener("click", () => {
+      const json = JSON.stringify(pages, null, 2);
+      jsonOutput.textContent = json;
+      jsonOutput.style.display = "block";
+      navigator.clipboard?.writeText(json).catch(() => {});
+      statusMsg.textContent = "Config JSON copied (in real app this would sync to the cloud).";
+      statusMsg.style.color = "#16a34a";
+    });
+
+    renderList();
+  </script>
+</body>
+</html>
